@@ -1,7 +1,7 @@
 package com.csvupload.controller;
 
-import com.csvupload.entity.UploadEntity;
 import com.csvupload.entity.User;
+import com.csvupload.entity.UserUploadLog;
 import com.csvupload.service.CsvUploadService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,21 +25,19 @@ public class UserController {
 
     @PostMapping("/upload")
     public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file) {
-        String message = "";
 
-        UploadEntity upload = new UploadEntity();
-        upload.setUploadBy("name");
+        UserUploadLog upload = new UserUploadLog();
+        upload.setUploadBy("rupesh dulal");
         upload.setSpreedsheetName(file.getOriginalFilename());
-        upload.setSpreedSheetFormat("");
+        upload.setSpreedSheetFormat(file.getName());
         upload.setSpreedSheetSubmitDate(new Date());
 
         try {
             userService.save(file, upload);
-            message = "Uploaded the file successfully: " + file.getOriginalFilename();
-            return ResponseEntity.status(HttpStatus.OK).body(message);
+            return ResponseEntity.status(HttpStatus.OK).body("Uploaded the file successfully: " + file.getOriginalFilename());
         } catch (Exception e) {
-            message = "Could not upload the file: " + file.getOriginalFilename() + "!";
-            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(message);
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("Could not upload the file: " + file.getOriginalFilename() + "!");
         }
 
     }

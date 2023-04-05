@@ -1,0 +1,49 @@
+# Define the User data model
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        firstName:
+          type: string
+        lastName:
+          type: string
+        gender:
+          type: string
+        email:
+          type: string
+
+    # Define the UserLog data model
+    UserLog:
+      type: object
+      properties:
+        id:
+          type: integer
+        uploadBy:
+          type: string
+        spreedsheetName:
+          type: string
+        spreedSheetSubmitDate:
+          type: string
+          format: date-time
+        processingStatus:
+          type: string
+        processingNotes:
+          type: string
+        spreedSheetFormat:
+          type: string
+
+# Define the Register schema with a reference to the User schema
+schemas:
+  User:
+    type: "object"
+    required:
+      - "requestBody"
+    properties:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
