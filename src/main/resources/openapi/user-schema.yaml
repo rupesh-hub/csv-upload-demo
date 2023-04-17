@@ -16,7 +16,7 @@ components:
           type: string
 
     # Define the UserLog data model
-    UserLog:
+    UserUploadLog:
       type: object
       properties:
         id:

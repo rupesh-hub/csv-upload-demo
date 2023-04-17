@@ -32,6 +32,8 @@ public class CsvUploadHelper {
             if (CsvUploadHelper.isHeaderDuplicate(new InputStreamReader(file.getInputStream())))
                 throw new Exception("duplicate headers exists");
 
+            System.out.println(CsvUploadHelper.countMissingValuesByRow(new InputStreamReader(file.getInputStream())).size());
+
             List<String> noContents = CsvUploadHelper.checkFieldContent(new InputStreamReader(file.getInputStream()));
             if (noContents.size() > 0) //CHECK IS THERE DATA IN ANY FIELD OR NOT
                 noContents.forEach(System.out::println);
@@ -79,6 +81,30 @@ public class CsvUploadHelper {
         return hasNoContents;
     }
 
+    public static List<Integer> countMissingValuesByRow(Reader reader) throws IOException {
+        List<Integer> rowsWithMissingValues = new ArrayList<>();
+
+        try (CSVReader csvReader = new CSVReader(reader)) {
+            String[] header = csvReader.readNext(); // assuming first row is header
+
+            String[] row;
+            int rowCount = 1; // start counting rows from 1
+            while ((row = csvReader.readNext()) != null) {
+                rowCount++;
+                for (int i = 0; i < row.length; i++) {
+                    if (row[i].isEmpty()) {
+                        rowsWithMissingValues.add(rowCount);
+                        break; // break out of loop if a missing value is found
+                    }
+                }
+            }
+        } catch (CsvValidationException e) {
+            e.printStackTrace();
+        }
+
+        return rowsWithMissingValues;
+    }
+
     private static List<User> readCsv(Reader reader) {
         List<User> users = new ArrayList<>();
 
@@ -87,7 +113,9 @@ public class CsvUploadHelper {
             List<String[]> rows = csvReader.readAll();
 
             rows.forEach(row -> {
-                users.add(new User(row[1], row[2], row[3], row[4]));
+                User user = new User(row[1], row[2], row[3], row[4]);
+                user.setAddress(new User.Address(row[5], row[6]));
+                users.add(user);
             });
 
             return users;

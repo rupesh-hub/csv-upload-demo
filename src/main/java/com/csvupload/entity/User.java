@@ -25,11 +25,22 @@ public class User {
     private String email;
     private String gender;
 
+    private Address address;
+
     public User(String firstName, String lastName, String email, String gender) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.gender = gender;
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class Address {
+        private String country;
+        private String city;
     }
 
 }

@@ -133,7 +133,7 @@
 							<goal>generate</goal>
 						</goals>
 						<configuration>
-							<inputSpec>src/main/resources/openapi.yml</inputSpec>
+							<inputSpec>${project.basedir}/src/main/resources/openapi/user-api.json</inputSpec>
 							<generatorName>java</generatorName>
 							<configOptions>
 								<dateLibrary>java8</dateLibrary>
@@ -153,7 +153,6 @@
 						<groupId>org.openapitools</groupId>
 						<artifactId>openapi-generator-cli</artifactId>
 						<version>6.3.0</version>
-						<scope>provided</scope>
 					</dependency>
 				</dependencies>
 			</plugin>

@@ -1,4 +1,6 @@
-
+springdoc:
+  api-docs:
+    path: /openapi-doc
 spring:
   servlet:
     multipart:
